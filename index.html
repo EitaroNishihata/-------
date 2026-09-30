@@ -99,12 +99,15 @@
     overflow: hidden;
     background: #fff;
   }
+  .screen { position: relative; background: #ececf0; }
   iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    left: 0; top: 0;
+    width: 393px;   /* Figmaフレームの実寸(FRAME_W) */
+    height: 852px;  /* Figmaフレームの実寸(FRAME_H) */
     border: 0;
-    background: #fff;
+    transform-origin: 0 0;
+    background: #ececf0;
   }
 
   /* Smartphone: near full-screen, no mockup */
@@ -148,10 +151,24 @@
       <div class="screen">
         <iframe
           title="YORIMICHI プロトタイプ"
-          src="https://embed.figma.com/proto/cIB6MGcDjejwQpf2YhvTkt/%E5%AE%9F%E7%BF%92-%E3%83%A1%E3%83%A2%E3%82%A2%E3%83%97%E3%83%AA?node-id=1538-348&amp;viewport=392%2C-42%2C0.07&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;starting-point-node-id=1538%3A348&amp;page-id=1362%3A5953&amp;embed-host=share&amp;hide-ui=1"
+          src="https://embed.figma.com/proto/cIB6MGcDjejwQpf2YhvTkt/%E5%AE%9F%E7%BF%92-%E3%83%A1%E3%83%A2%E3%82%A2%E3%83%97%E3%83%AA?node-id=1538-348&amp;viewport=392%2C-42%2C0.07&amp;scaling=contain&amp;content-scaling=fixed&amp;starting-point-node-id=1538%3A348&amp;page-id=1362%3A5953&amp;embed-host=share&amp;hide-ui=1"
           allowfullscreen></iframe>
       </div>
     </div>
   </main>
+<script>
+  // Figmaフレームの実寸に合わせて、枠いっぱいに拡大縮小する
+  const FRAME_W = 393, FRAME_H = 852;
+  const screen = document.querySelector('.screen');
+  const frame = document.querySelector('iframe');
+  function fit() {
+    const w = screen.clientWidth, h = screen.clientHeight;
+    const s = Math.min(w / FRAME_W, h / FRAME_H);
+    const x = (w - FRAME_W * s) / 2, y = (h - FRAME_H * s) / 2;
+    frame.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  }
+  new ResizeObserver(fit).observe(screen);
+  fit();
+</script>
 </body>
 </html>
